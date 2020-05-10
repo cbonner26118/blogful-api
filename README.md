@@ -1,29 +1,30 @@
-# Seeding database:
+# Blogful API
+
+CRUD Express app for connecting with a PostgreSQL database with a heavy emphasis on integration testing.
+
+## Scripts:
+
+Start the app `npm start`
+
+Start nodemon for the app `npm run dev`
+
+Run the tests in watch mode `npm test`
+
+Migrate the database at `DB_URL`, with `npm run migrate`
+
+Migrate the database at `TEST_DB_URL`, with `npm run migrate:test`
+
+## Env Setup:
+
+Remember to create an `.env` file with `DB_URL` and `TEST_DB_URL`
+
+## Seeding database:
 
 psql -U dunder_mifflin -d blogful -f ./blogful-api/seeds/seed.blogful_articles.sql
 
-# Express Boilerplate!
+## Built with my Express Boilerplate!
 
-This is a boilerplate project used for starting new projects!
-
-## Set up
-
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
-
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
-
-## Scripts
-
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`
+This express app was started using my boilerplate found at `https://github.com/cbonner26118/express-boilerplate`
 
 ## Deploying
 
