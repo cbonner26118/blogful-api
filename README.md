@@ -20,7 +20,7 @@ Remember to create an `.env` file with `DB_URL` and `TEST_DB_URL`
 
 ## Seeding database:
 
-psql -U dunder_mifflin -d blogful -f ./blogful-api/seeds/seed.blogful_articles.sql
+`psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql`
 
 ## Built with my Express Boilerplate!
 
