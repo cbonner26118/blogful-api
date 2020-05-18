@@ -12,6 +12,7 @@ const serializeArticle = (article) => ({
   title: xss(article.title),
   content: xss(article.content),
   date_published: article.date_published,
+  author: article.author,
 });
 
 articlesRouter
@@ -25,23 +26,22 @@ articlesRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { title, content, style } = req.body;
+    const { title, content, style, author } = req.body;
     const newArticle = { title, content, style };
 
-    for (const [key, value] of Object.entries(newArticle)) {
-      if (value == null) {
+    for (const [key, value] of Object.entries(newArticle))
+      if (value == null)
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
         });
-      }
-    }
 
+    newArticle.author = author;
     ArticlesService.insertArticle(req.app.get('db'), newArticle)
       .then((article) => {
         res
           .status(201)
           .location(
-            path.posix.join(req.originalUrl + `/${article.id}`)
+            path.posix.join(req.originalUrl, `/${article.id}`)
           )
           .json(serializeArticle(article));
       })
@@ -64,20 +64,14 @@ articlesRouter
       .catch(next);
   })
   .get((req, res, next) => {
-    res.json({
-      id: res.article.id,
-      style: res.article.style,
-      title: xss(res.article.title),
-      content: xss(res.article.content),
-      date_published: res.article.date_published,
-    });
+    res.json(serializeArticle(res.article));
   })
   .delete((req, res, next) => {
     ArticlesService.deleteArticle(
       req.app.get('db'),
       req.params.article_id
     )
-      .then(() => {
+      .then((numRowsAffected) => {
         res.status(204).end();
       })
       .catch(next);
@@ -89,13 +83,12 @@ articlesRouter
     const numberOfValues = Object.values(articleToUpdate).filter(
       Boolean
     ).length;
-    if (numberOfValues === 0) {
+    if (numberOfValues === 0)
       return res.status(400).json({
         error: {
           message: `Request body must contain either 'title', 'style' or 'content'`,
         },
       });
-    }
 
     ArticlesService.updateArticle(
       req.app.get('db'),
